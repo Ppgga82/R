@@ -4,7 +4,7 @@ library('jsonlite')
 library('XML')
 library('RCurl')
 library('WDI')
-library('data.table')
+library('data.table') 
 
 # Индикатор показателя Общий объем выбросов парниковых газов (тыс. т эквивалента CO2)
 indicator.code <- 'SP.POP.TOTL.MA.ZS'

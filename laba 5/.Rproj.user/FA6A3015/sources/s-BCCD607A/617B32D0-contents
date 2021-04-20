@@ -41,7 +41,7 @@ WDI: любойпоказатель из раздела "Environment" (Окру�
 library('WDI')
 library('data.table')
 library('leaflet')
-setwd("C:/Лабы по R/laba 5")
+setwd("C:/Лабы по R/laba 5")  
 suppressPackageStartupMessages(library('googleVis'))
 
 # Индикатор показателя
