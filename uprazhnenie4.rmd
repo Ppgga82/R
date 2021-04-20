@@ -1,0 +1,115 @@
+---
+  title: "Упражнение №4"
+author: "Иванов Даниил"
+date: "16 04 2021"
+output: html_document
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Вариант - 12
+
+1. Карта-хороплет регионов РФ, входящих в состав федерального округа, указанного в варианте, построенная функцией spplot()по данным сборников “Регионы России” за последний доступный год 16.
+
+2. Такая же карта но со статистикой за 2010 год, построенная функцией ggplot().
+
+задание из варианта:
+  Центральный федеральный округ, любой показатель из раздела «Строительство».
+Взят показатель: Ввод в действие жилых домов на 1000 человек населения.
+
+# Библиотеки
+```{r, warning=F, message=F}
+library('R.utils')               # gunzip() для распаковки архивов 
+library('sp')                    # функция spplot()
+library('ggplot2')               # функция ggplot()
+library('RColorBrewer')          # цветовые палитры
+require('rgdal')                 # функция readOGR()
+library('broom')                 # функция tidy()
+require('dplyr')                 # функция join()
+library('scales')                # функция pretty_breaks()
+library('mapproj')               # проекции для карт
+library('gpclib')
+library('maptools')
+require('plyr')
+```
+
+## Первая карта с данными за 2010 год
+
+```{r, warning=F, message=F}
+gpclibPermit()
+
+
+# Считываем шейп-файл
+Regions <- readOGR("./data/admin_level_4.shp")
+regions.CFO <- c(79, 51, 7, 34, 20, 18, 50, 33, 55, 64,
+                 21, 71, 20, 70, 16, 23, 35, 65)
+Regions <- Regions[regions.CFO, ]
+# Данные с росстата за 2010 год по показателю "Ввод в действие жилых домов на 1000 человек населения" в ЦФО
+df.1 <- read.csv2('./data/region1.csv', stringsAsFactors = F)
+df.1
+Regions$name
+
+# Преобразуем имена в факторы
+Regions@data$name <- as.factor(Regions@data$name)
+
+# Делаем слияние шейп-файла с данными с росстата
+Regions@data <- merge(Regions@data, df.1, by.x = 'name', by.y = 'region', sort = FALSE)
+
+# Задаём палитру
+mypalette <-colorRampPalette(c('whitesmoke', 'coral3'))
+
+# Строим карту
+spplot(Regions, 'statistic', col.regions = mypalette(16),
+       col = 'coral4', main = 'число дорожно-транспортных происшествий',
+       panel = function(x, y, z, subscripts, ...){
+         panel.polygonsplot(x, y, z, subscripts, ...)
+         sp.text(coordinates(Regions),
+                 Regions$name[subscripts], cex = 0.7)
+       })
+
+# Очищаем память
+rm(Regions)
+```
+
+## Вторая карта с данными 2019 год
+
+```{r}
+# Загружаем данные за 2019 год
+df.2 <- read.csv2('./data/region2.csv', stringsAsFactors = F)
+df.2
+regions.CFO <- c(79, 51, 7, 34, 20, 18, 50, 33, 55, 64,
+                 21, 71, 20, 70, 16, 23, 35, 65)
+# Считываем шейп-файл
+Regions <- readOGR('./data/admin_level_4.shp')
+Regions <- Regions[regions.CFO, ]
+
+# Создаем столбец id для связи с другими таблицами
+Regions@data$id <- Regions@data$name
+# Преобразовываем SpatialPolygonsDataFrame в data.frame
+Regions.points <- fortify(Regions, region = 'id')
+# Добавляем к координатам сведения о регионах
+Regions.df <- join(Regions.points, Regions@data, by = 'id')
+
+df.2$id <- df.2$region
+Regions.df <- join(Regions.df, df.2[, c('id', 'statistic')], by = 'id')
+
+# Координаты центров полигонов (для подписей регионов)
+centroids.df <- as.data.frame(coordinates(Regions))
+
+centroids.df$id <- Regions@data$id
+colnames(centroids.df) <- c('long', 'lat', 'id')
+
+# Строим карту
+ggplot() + geom_polygon(data = Regions.df,
+                        aes(long, lat, group = group, fill = statistic)) +
+  geom_path(data = Regions.df, aes(long, lat, group = group),
+            color = 'coral4') +
+  coord_map(projection = 'gilbert') +
+  scale_fill_distiller(palette = 'OrRd', direction = 1,
+                       breaks = pretty_breaks(n = 5)) +
+  labs(x = 'Долгота', y = 'Широта',
+       title = 'число дорожно-транспортных происшествий') +
+  geom_text(data = centroids.df, aes(long, lat, label = id))
+```
