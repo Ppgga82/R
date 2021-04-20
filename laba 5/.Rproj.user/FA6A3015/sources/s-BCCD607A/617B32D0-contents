@@ -73,3 +73,34 @@ g.chart <- gvisGeoChart(data = data, locationvar = 'iso2c',
 gvisMerge(g.tbl, g.chart, horizontal = TRUE,
           tableOptions = 'bgcolor=\"#CCCCCC\" cellspacing=10')
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

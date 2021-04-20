@@ -1,7 +1,7 @@
 {
     "id": "6D648587",
-    "path": "C:/Users/iamstand/Downloads/zagruzka_dannyh.R",
-    "project_path": null,
+    "path": "C:/Лабы по R/laba 5/zagruzka_dannyh.R",
+    "project_path": "zagruzka_dannyh.R",
     "type": "r_source",
     "hash": "1160021350",
     "contents": "",
@@ -16,11 +16,11 @@
         "scrollLine": "5"
     },
     "folds": "",
-    "lastKnownWriteTime": 1618947322,
+    "lastKnownWriteTime": 1618947561,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1618947322018,
+    "last_content_update": 1618947561158,
     "read_only": false,
     "read_only_alternatives": []
 }

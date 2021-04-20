@@ -1,9 +1,9 @@
 {
     "id": "617B32D0",
-    "path": "C:/Users/iamstand/Downloads/lab_rab_5_1.rmd",
-    "project_path": null,
+    "path": "C:/Лабы по R/laba 5/lab_rab_5_1.rmd",
+    "project_path": "lab_rab_5_1.rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "3826596789",
     "contents": "",
     "dirty": false,
     "created": 1618944516332.0,
@@ -12,16 +12,16 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "4,8",
-        "scrollLine": "5",
+        "cursorPosition": "19,115",
+        "scrollLine": "16",
         "last_setup_crc32": "BCCD607Abb338d19"
     },
     "folds": "",
-    "lastKnownWriteTime": 1618947324,
+    "lastKnownWriteTime": 1618947535,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1618947324852,
+    "last_content_update": 1618947535942,
     "read_only": false,
     "read_only_alternatives": []
 }

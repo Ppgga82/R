@@ -4,10 +4,10 @@ library('jsonlite')
 library('XML')
 library('RCurl')
 library('WDI')
-library('data.table')
+library('data.table') 
 
 # Индикатор показателя Общий объем выбросов парниковых газов (тыс. т эквивалента CO2)
-indicator.code <- 'EN.ATM.GHGT.KT.CE'
+indicator.code <- 'SP.POP.TOTL.MA.ZS'
 
 # Парсим данные с WDI
 data <- data.table(WDI(indicator = indicator.code, start = 2012, end = 2012))
@@ -18,7 +18,7 @@ write.csv(data, file = './data/dannye_WDI.csv', row.names = F)
 # Портал открытых данные РФ
 
 # API ключ для работы с порталом
-API.key <- '087b07d503be6b5fa0d1cbfb7326deb6'
+API.key <- '4d77c9efbb649b1c5c21dd507c8ae811'
 # Ссылка для работы с API
 URL.base <- 'http://data.gov.ru/api/'
 
@@ -46,16 +46,17 @@ nrow(versions)
 
 # Загружаем последнюю версию в объект doc
 mrv <- versions[nrow(versions), 1]
+
 params <- c(params, mrv)
 content <- c(params, 'content')
 doc <- getOpenDataRF(content)
 
 # Оставляем данные с городом Суровикино
-doc <- doc[grep('г. Суровикино', doc$Address), c('Year2', 'Wall', 'TotalArea1', 'Address')]
+doc <- doc[grep('г. Ленинск', doc$Address), c('Year2', 'Wall', 'TotalArea1', 'Address')]
 
 # Находим координаты с помощь имеющихся адрессов через API Yandex карт
 # Ключ API для работы с Яндекс картами
-API.key <- 'a31dfb4a-5efb-4ccd-bc06-e12a7ce2f2b9'
+API.key <- '4952fdad-f69f-4340-a89d-34fb0ce2ce9c'
 URL.base <- 'https://geocode-maps.yandex.ru/1.x/'
 
 # Функция для работы с API Yandex Карт
@@ -89,3 +90,4 @@ colnames(df.coords) <- c('long', 'lat')
 doc <- cbind(doc, df.coords)
 # Сохраняем данные в файл
 write.csv2(doc, file = './data/dannye_data_gov.csv', row.names = F)
+
